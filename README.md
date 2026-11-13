@@ -34,4 +34,5 @@ d40dbd5f-58f5-3a1c-96bc-8ecc2d712422,"Tittel, med komma",ja,nei,nei
 
 1. Rediger filen direkte på GitHub og foreslå endringen som en pull request.
 2. Valideringen sjekker formatet, at ingen datasett står flere ganger, og at alle datasettene finnes på data.norge.no.
-3. Når pull requesten er merget, blir endringen synlig på data.norge.no neste gang datasettet høstes.
+3. Når pull requesten er merget, blir endringen synlig på data.norge.no neste gang datasettet blir endret av utgiver
+   eller kilden høstes med tvungen oppdatering. Merge trigger foreløpig ikke høsting.
