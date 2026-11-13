@@ -12,6 +12,8 @@ jobs:
   validate:
     name: Validate high-value dataset types
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+      - run: python3 -m unittest discover -s .github/scripts -p "test_*.py"
       - run: python3 .github/scripts/validate_high_value_dataset_types.py high-value-dataset-types.csv

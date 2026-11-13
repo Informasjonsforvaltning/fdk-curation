@@ -1,6 +1,7 @@
 import csv
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -8,16 +9,24 @@ EXPECTED_HEADER = ["fdkId", "title", "eu-hvd", "national-hvd", "national-basic-d
 VALUES = {"ja", "nei"}
 UUID = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 DATASET_API = "https://resource.api.fellesdatakatalog.digdir.no/v1/datasets/"
+ATTEMPTS = 3
+RETRY_DELAY_SECONDS = 5
 
 
 def dataset_exists(fdk_id):
-    try:
-        with urllib.request.urlopen(DATASET_API + fdk_id, timeout=30) as response:
-            return response.status == 200
-    except urllib.error.HTTPError as error:
-        if error.code == 404:
-            return False
-        raise
+    for attempt in range(1, ATTEMPTS + 1):
+        try:
+            with urllib.request.urlopen(DATASET_API + fdk_id, timeout=30) as response:
+                return response.status == 200
+        except urllib.error.HTTPError as error:
+            if error.code == 404:
+                return False
+            if attempt == ATTEMPTS:
+                raise
+        except urllib.error.URLError:
+            if attempt == ATTEMPTS:
+                raise
+        time.sleep(RETRY_DELAY_SECONDS)
 
 
 def validate(path, check_exists):
