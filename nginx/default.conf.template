@@ -1,0 +1,32 @@
+server_tokens off;
+
+server {
+    listen 8080;
+    root /usr/share/nginx/html;
+
+    if ($request_method !~ ^(GET|HEAD)$) {
+        return 405;
+    }
+
+    add_header X-Curation-Version "${CURATION_VERSION}" always;
+
+    location = /high-value-dataset-types.csv {
+        default_type text/csv;
+        charset utf-8;
+        charset_types text/csv;
+    }
+
+    location = /version {
+        default_type text/plain;
+        return 200 "${CURATION_VERSION}\n";
+    }
+
+    location = /ping {
+        access_log off;
+        return 200;
+    }
+
+    location / {
+        return 404;
+    }
+}
