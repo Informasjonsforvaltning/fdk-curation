@@ -36,3 +36,10 @@ d40dbd5f-58f5-3a1c-96bc-8ecc2d712422,"Tittel, med komma",ja,nei,nei
 2. Valideringen sjekker formatet, at ingen datasett står flere ganger, og at alle datasettene finnes på data.norge.no.
 3. Når pull requesten er merget, blir endringen synlig på data.norge.no neste gang datasettet blir endret av utgiver
    eller kilden høstes med tvungen oppdatering. Merge trigger foreløpig ikke høsting.
+
+## Server
+
+Filen serveres internt i clusteret av en nginx, `http://fdk-curation:8080/high-value-dataset-types.csv`. Imaget bygges
+og deployes til staging når en pull request opprettes, og til prod og demo når den merges. Versjonen står i headeren
+`X-Curation-Version` og på `/version`. I prod og demo er det commit-sha-en på main, i staging er det GitHubs merge-commit
+for pull requesten.
