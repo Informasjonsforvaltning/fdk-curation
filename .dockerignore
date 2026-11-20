@@ -1,3 +1,4 @@
 *
 !nginx/default.conf.template
 !high-value-dataset-types.csv
+!nginx/nginx.conf
