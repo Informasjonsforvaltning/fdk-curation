@@ -34,8 +34,8 @@ d40dbd5f-58f5-3a1c-96bc-8ecc2d712422,"Tittel, med komma",ja,nei,nei
 
 1. Rediger filen direkte på GitHub og foreslå endringen som en pull request.
 2. Valideringen sjekker formatet, at ingen datasett står flere ganger, og at alle datasettene finnes på data.norge.no.
-3. Når pull requesten er merget, blir endringen synlig på data.norge.no neste gang datasettet blir endret av utgiver
-   eller kilden høstes med tvungen oppdatering. Merge trigger foreløpig ikke høsting.
+3. Når pull requesten er merget, høstes datasettene som har fått endret markering på nytt, og endringen blir synlig
+   på data.norge.no etter omtrent et kvarter.
 
 ## Server
 
@@ -43,3 +43,7 @@ Filen serveres internt i clusteret av en nginx, `http://fdk-curation:8080/high-v
 og deployes til staging når en pull request opprettes, og til prod og demo når den merges. Versjonen står i headeren
 `X-Curation-Version` og på `/version`. I prod og demo er det commit-sha-en på main, i staging er det GitHubs merge-commit
 for pull requesten.
+
+fdk-reasoning-service og fdk-harvest-admin-service henter filen hvert femte minutt. Når harvest-admin ser en endring,
+venter den seks minutter, slik at reasoning har rukket å laste den nye filen, og starter så tvungen høsting av
+datasettene der en markering er lagt til, endret eller fjernet.
